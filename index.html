@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Drawing Animation with Shadow on Path</title>
+    <style>
+        .body_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #000000, #1a0033, #330066, #660099, #9900cc, #cc00ff);
+            background-size: 600% 600%;
+            animation: gradientAnimation 10s ease infinite;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .memories {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .memories p {
+            color: white;
+            font-size: 24px;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            width: 100%;
+            background-color: rgba(109, 4, 237, 0.929);
+            padding: 10px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 2px 10px rgba(109, 4, 237, 0.7);
+        }
+
+        .for_heart {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        svg {
+            width: 70vw;
+            max-width: 300px;
+            height: auto;
+            cursor: pointer;
+            filter: drop-shadow(0px 0px 15px rgba(253, 3, 140, 0.7));
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        svg:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0px 0px 25px rgba(253, 3, 140, 1));
+        }
+
+        path {
+            fill: none;
+            stroke: rgb(201, 39, 142);
+            stroke-width: 1;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 3s ease-in-out;
+            filter: drop-shadow(1px 1px 1px rgba(253, 3, 140));
+        }
+
+        .draw {
+            stroke-dashoffset: 0;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            width: 400px;
+            height: 400px;
+          
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 300;
+            font-size: 20px;
+        }
+
+        .flip-card-front {
+            background-color: rgb(157, 118, 246);
+            border-radius: 200px;
+            box-shadow: 5px 5px 30px 7px white;
+        }
+
+        .flip-card-back {
+            background-color: rgb(103, 175, 238);
+            transform: rotateY(180deg);
+            flex-direction: column;
+            border-radius: 200px;
+            box-shadow: 5px 5px 30px 7px rgb(14, 13, 13);
+        }
+
+        .flip-card-back img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px;
+        }
+
+        .timer {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                font-size: 18px;
+                padding: 8px;
+            }
+
+            svg {
+                width: 50vw;
+            }
+
+            .timer {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        2 месяца вместе
+    </header>
+    <div class="body_container">
+        <div class="for_heart">
+            <p style="cursor: pointer;color:white;font-size: 20px;" id="hiText">Нажми на меня, Алёнка!</p>
+            <svg id="heart-svg" viewBox="0 0 28 28">
+                <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+        </div>
+
+        <div class="timer" id="countdown">
+            <p>До нашей встречи осталось:</p>
+            <p id="timerText" style="color:pink;font-size: 40px; text-shadow: 2px 2px 3px rgba(109, 4, 237, 0.929);">
+            </p>
+        </div>
+        <div class="memories">
+            <P> А пока... </P>
+            <br>
+            <p> Вспомним,что нас объединяет</p>
+        </div>
+        <div style="display: flex;justify-content: space-between;width: 100%;">
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div style="display:flex;width: 200px;height:200px;cursor: pointer; background-color: rgb(157, 118, 246);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            Наши любимые исполнители
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div style="text-wrap:balance;display:flex;justify-content:space-evenly;align-items:flex-end;width: 200px;height:200px;cursor: pointer; background-color: rgb(103, 175, 238);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            <div style="position:absolute;top: -4px;right: 160px; ">
+                                <img src="./images/noize.jpg"  alt="Noize MC">
+                                <p>1. Noize MC  ❤️</p>
+                            </div>
+                            <div style="position:absolute;left: 3px;bottom: 140px; ">
+                                <img src="./images/lsp.jpg"   alt="LSP">
+                                <p>2. LSP 🐖</p>
+                            </div>
+                            <div style="position:absolute;right: -6px; ">
+                                <img src="images/nervy.jpg" style="object-fit: cover;"   alt="Artist 3">
+                                <p>3. Нервы  💔</p>
+                            </div>
+                            <div style="position:absolute;top:200px;left: 120px;">
+                                <img src="images/2rbina.jpg" style="object-fit: cover;"  alt="Artist 3">
+                                <p>2rbina 2rista ☠️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div style="display:flex;width: 200px;height:200px;cursor: pointer; background-color: rgb(157, 118, 246);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            Наши любимые блюда
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div style="text-wrap:balance;display:flex;justify-content:space-evenly;align-items:flex-end;width: 200px;height:200px;cursor: pointer; background-color: rgb(103, 175, 238);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            <div style="position:absolute;top: -4px;right: 100px; ">
+                                <img src="./images/noize.jpg"  alt="Noize MC">
+                                <p>1. Noize MC  ❤️</p>
+                            </div>
+                            <div style="position:absolute;left: 3px;bottom: 140px; ">
+                                <img src="./images/lsp.jpg"   alt="LSP">
+                                <p>2. LSP 🐖</p>
+                            </div>
+                            <div style="position:absolute;right: -6px; ">
+                                <img src="images/nervy.jpg" style="object-fit: cover;"   alt="Artist 3">
+                                <p>3. Нервы  💔</p>
+                            </div>
+                            <div style="position:absolute;top:200px;left: 120px;">
+                                <img src="images/2rbina.jpg" style="object-fit: cover;"  alt="Artist 3">
+                                <p>2rbina 2rista ☠️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div style="display:flex;width: 200px;height:200px;cursor: pointer; background-color: rgb(157, 118, 246);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            Наши любимые исполнители
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div style="text-wrap:balance;display:flex;justify-content:space-evenly;align-items:flex-end;width: 200px;height:200px;cursor: pointer; background-color: rgb(103, 175, 238);border-radius: 200px; justify-content: center;align-items: center;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-family:  300;">
+                            <div style="position:absolute;top: -4px;right: 120px; ">
+                                <img src="./images/noize.jpg"  alt="Noize MC">
+                                <p>1. Noize MC  ❤️</p>
+                            </div>
+                            <div style="position:absolute;left: 9px;bottom: 140px; ">
+                                <img src="./images/lsp.jpg"   alt="LSP">
+                                <p>2. ЛСП 🐖</p>
+                            </div>
+                            <div style="position:absolute;right: 2px; ">
+                                <img src="images/nervy.jpg" style="object-fit: cover;"   alt="Artist 3">
+                                <p>3. Нервы  💔</p>
+                            </div>
+                            <div style="position:absolute;top:200px;left: 120px;">
+                                <img src="images/2rbina.jpg" style="object-fit: cover;"  alt="Artist 3">
+                                <p>2rbina 2rista ☠️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
+    <script>
+           new cursoreffects.fairyDustCursor({ colors: ["#ff0000", "#00ff00", "#0000ff"] });
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        const heartPath = document.querySelector('#heart-svg path');
+        const timer = document.getElementById('timerText');
+        const nextMeetDate = new Date("2024-12-20T00:00:00").getTime();
+
+        document.getElementById('hiText').addEventListener('click', function () {
+            heartPath.classList.add('draw');
+            this.style.display = 'none';
+            timer.style.display = 'block';
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        });
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = nextMeetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timer.innerHTML = `${days}д ${hours}ч ${minutes}м ${seconds}с `;
+
+            if (distance < 0) {
+                timer.innerHTML = "Время истекло!";
+            }
+        }
+    </script>
+</body>
+
+</html>
